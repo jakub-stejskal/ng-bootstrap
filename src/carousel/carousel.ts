@@ -5,9 +5,11 @@ import {
   ContentChildren,
   QueryList,
   Input,
+  Output,
   OnDestroy,
   AfterContentChecked,
-  OnInit
+  OnInit,
+  EventEmitter
 } from '@angular/core';
 import {NgbCarouselConfig} from './carousel-config';
 
@@ -85,6 +87,8 @@ export class NgbCarousel implements AfterContentChecked,
    */
   @Input() activeId: string;
 
+  @Output('select') onSelected = new EventEmitter<string>();
+
   constructor(config: NgbCarouselConfig) {
     this.interval = config.interval;
     this.wrap = config.wrap;
@@ -142,6 +146,7 @@ export class NgbCarousel implements AfterContentChecked,
     let selectedSlide = this._getSlideById(slideIdx);
     if (selectedSlide) {
       this.activeId = selectedSlide.id;
+      this.onSelected.emit(this.activeId);
     }
   }
 
